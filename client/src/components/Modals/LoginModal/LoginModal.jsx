@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import LoginPage from "../../../pages/Login/Login.jsx";
 import { useSelector, useDispatch } from "react-redux";

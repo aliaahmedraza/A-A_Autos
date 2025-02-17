@@ -28,7 +28,7 @@ const SignUpModal = () => {
       >
         SignUp
       </button> */}
-      <button onClick={showModal} className="btn">
+      <button onClick={showModal} className="btn ml-8">
         SignUp
         <div className="arrow-wrapper">
           <div className="arrow"></div>
