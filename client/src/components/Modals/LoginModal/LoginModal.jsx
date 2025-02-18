@@ -42,7 +42,7 @@ const LoginModal = () => {
         LogIn
       </button> */}
       <button onClick={showModal} className="btn" id="login">
-         Login
+        Login
         <div className="arrow-wrapper">
           <div className="arrow"></div>
         </div>

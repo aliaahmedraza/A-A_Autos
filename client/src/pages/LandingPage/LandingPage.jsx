@@ -4,6 +4,12 @@ import SignUpModal from "../../components/Modals/SignUpModal/SignUpModal";
 import Marquee from "react-fast-marquee";
 
 const LandingPage = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="flex justify-between items-center bg-[#c5252c] h-28 px-24">
@@ -59,7 +65,10 @@ const LandingPage = () => {
             to every ride. Your bike deserves the best, and we’re here to
             deliver it!
           </p>
-          <button className="bg-white text-[#C92228] hover:bg-[#252379] mb-4 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl active:scale-95">
+          <button
+            className="bg-white text-[#C92228] hover:bg-[#252379] mb-4 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl active:scale-95"
+            onClick={scrollToTop}
+          >
             Get Started Now
           </button>
         </div>

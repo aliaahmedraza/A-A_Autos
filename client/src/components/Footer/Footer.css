@@ -1,50 +1,138 @@
 .footer {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 12rem; 
-  background-color: #c5252c;
-  padding: 0 2.5rem;
-  overflow: hidden;
+  background-color: #252379;
+  color: white;
+  width: 100%;
 }
 
-.footer::before {
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.footer-section {
+  padding: 0 1rem;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.footer-section h3::after {
   content: "";
   position: absolute;
-  top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #252379;
-  clip-path: polygon(0 100px, 100% 0, 100% 100%, 0% 100%);
-  z-index: 0;
+  bottom: -0.5rem;
+  width: 50px;
+  height: 2px;
+  background-color: white;
 }
 
-.footer ul,
-.footer .social-icons {
-  position: relative;
-  z-index: 1;
+.footer-section p {
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
 }
 
-.footer ul {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  font-weight: bold;
+.footer-section ul {
+  list-style: none;
+  padding: 0;
 }
 
-.footer .social-icons {
-  display: flex;
-  gap: 1.5rem;
+.footer-section ul li {
+  margin-bottom: 0.8rem;
 }
 
-.footer a {
+.footer-section ul li a {
   color: white;
   text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
-.footer a:hover {
-  text-decoration: underline;
+.footer-section ul li a:hover {
+  padding-left: 5px;
+  opacity: 0.8;
 }
 
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.social-icons a {
+  color: white;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: translateY(-3px);
+  opacity: 0.8;
+}
+
+.contact-info p {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.contact-info svg {
+  font-size: 1.2rem;
+}
+
+.business-hours {
+  margin-top: 1.5rem;
+}
+
+.business-hours h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.business-hours p {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 3rem 1rem 1rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-section h3::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  .contact-info p {
+    justify-content: center;
+  }
+}
