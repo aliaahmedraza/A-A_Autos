@@ -1,18 +1,19 @@
 import Footer from "../../components/Footer/Footer";
 import LoginModal from "../../components/Modals/LoginModal/LoginModal";
 import SignUpModal from "../../components/Modals/SignUpModal/SignUpModal";
+import Marquee from "react-fast-marquee";
 
 const LandingPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      <div className="flex justify-between items-center bg-[#001529] h-28 px-24">
+      <div className="flex justify-between items-center bg-[#c5252c] h-28 px-24">
         <div className="flex justify-center items-center">
           <span>
             <img
               src="/Assets/Images/C10.png"
               alt="logo"
               className="w-20 h-20"
-            />{" "}
+            />
           </span>
           <h1 className="text-white font-bold text-3xl ml-4">A&A Autos</h1>
         </div>
@@ -21,6 +22,19 @@ const LandingPage = () => {
           <SignUpModal />
         </div>
       </div>
+      <div className="bg-[#252379] py-2  h-10">
+        <Marquee gradient={false} speed={60}>
+          <p className="text-white text-lg font-bold mx-4">
+            Welcome to Our Website
+          </p>
+          <p className="text-white text-lg font-bold mx-4">
+            Get the Best Deals Here!
+          </p>
+          <p className="text-white text-lg font-bold mx-4">
+            24/7 Customer Support Available
+          </p>
+        </Marquee>
+      </div>
       <div className="flex bg-[url('/Assets/Images/C1.jpg')] bg-cover bg-center w-full h-screen">
         <div className="bg-gradient-to-r from-[#252379] to-[#C92228] text-white h-[70%] flex flex-col justify-center items-center px-6 w-[30%] rounded-lg ml-32 mt-36">
           <h1 className="text-5xl md:text-3xl lg:text-4xl font-bold mb-6 text-center leading-tight">
@@ -28,7 +42,8 @@ const LandingPage = () => {
               A&A Auto's
             </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">
-              "Book, Track, Ride – Bike Service Simplified!"
+              "Book, Track & Ride" <br />
+              "Bike Service Simplified!"
             </span>
           </h1>
           <p className="text-lg md:text-xl lg:text-2xl text-center max-w-3xl mb-12 text-gray-100 font-light leading-relaxed">
