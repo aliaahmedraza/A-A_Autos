@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -6,15 +6,19 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = ({ onLoginSuccess }) => {
+const LoginPage = ({ onLoginSuccess}) => {
   const navigate = useNavigate();
   const [isTokenExpired, setIsTokenExpired] = useState(false);
   const [isTokenPresent, setIsTokenPresent] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email address").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
   });
 
   const initialValues = {
@@ -22,7 +26,6 @@ const LoginPage = ({ onLoginSuccess }) => {
     password: "",
   };
 
-  // Check for existing token on component mount
   useEffect(() => {
     const token = Cookies.get("token");
 
@@ -57,6 +60,8 @@ const LoginPage = ({ onLoginSuccess }) => {
     }
   }, [showSuccessMessage, navigate]);
 
+
+
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       const response = await axios.post(
@@ -85,7 +90,7 @@ const LoginPage = ({ onLoginSuccess }) => {
 
   return (
     <div className="h-[70%] flex items-center justify-center p-4 relative mt-8">
-      <div className=" p-8 rounded-xl shadow-md w-full max-w-md">
+      <div className="p-8 rounded-xl shadow-md w-full max-w-md">
         {isTokenPresent && isTokenExpired && (
           <p className="text-red-500 text-center mb-4">
             Your session has expired. Please log in again.

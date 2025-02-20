@@ -8,6 +8,7 @@ import UpdateProfile from "../pages/UpdateUserProfile/UpdateProfile.jsx";
 import Dashboard from "../pages/Dashboard/Dashboard.jsx";
 import LandingPage from "../pages/LandingPage/LandingPage.jsx";
 import About from "../pages/About/About.jsx";
+import ProtectedRoutes from "./ProtectedRoutes/ProtectedRoutes.jsx";
 const AllRoutes = () => {
   return (
     <div>
@@ -19,7 +20,7 @@ const AllRoutes = () => {
       <Route path="/update" element={<UpdateProfile/>}/>
       <Route path="/dashboard" element={<Dashboard/>}/>
       <Route path="/login" element={<Login/>}/>
-      <Route path="/about" element={<About/>}/>
+      <Route path="/about" element={<ProtectedRoutes><About/></ProtectedRoutes>}/>
       </Routes>
     </div>
   );

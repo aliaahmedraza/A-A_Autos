@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { signUpState } from "../../Redus/UserSignUp/UserSignUpSlice.js";
+import PasswordStrengthMeter from "../../components/PasswordStrengthMeter/PasswordStrengthMeter.jsx";
 
 const SignupSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -80,7 +81,7 @@ const SignupPage = ({onSignUpSuccess}) => {
           validationSchema={SignupSchema}
           onSubmit={handleSubmit}
         >
-          {({ errors, touched, isSubmitting }) => (
+          {({ errors, touched, isSubmitting,values }) => (
             <Form>
               <div className="mb-4">
                 <label htmlFor="username" className="block text-gray-700 mb-2">
@@ -200,6 +201,7 @@ const SignupPage = ({onSignUpSuccess}) => {
                 {errors.password && touched.password && (
                   <div className="text-red-500 text-sm mt-1">{errors.cnic}</div>
                 )}
+                <PasswordStrengthMeter password={values.password}/>
               </div>
               <div className="mb-4">
                 <label htmlFor="role" className="block text-gray-700 mb-2">
