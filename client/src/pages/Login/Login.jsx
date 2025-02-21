@@ -1,15 +1,16 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userState, clearUserState } from "../../Redux/Slicers/userSlice";
 
-const LoginPage = ({ onLoginSuccess}) => {
+const LoginPage = ({ onLoginSuccess }) => {
   const navigate = useNavigate();
-  const [isTokenExpired, setIsTokenExpired] = useState(false);
-  const [isTokenPresent, setIsTokenPresent] = useState(false);
+  const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -21,11 +22,6 @@ const LoginPage = ({ onLoginSuccess}) => {
       .required("Password is required"),
   });
 
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-
   useEffect(() => {
     const token = Cookies.get("token");
 
@@ -36,31 +32,22 @@ const LoginPage = ({ onLoginSuccess}) => {
         const currentTime = Date.now();
 
         if (currentTime > expiryTime) {
-          setIsTokenExpired(true);
+          console.warn("Token expired, logging out...");
+          Cookies.remove("token");
+          dispatch(clearUserState());
           navigate("/");
         } else {
+          dispatch(userState(decodedToken)); // ✅ Persist login state on refresh
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; // ✅ Set token for API requests
           navigate("/dashboard");
         }
-        setIsTokenPresent(true);
       } catch (error) {
         console.error("Error decoding the token:", error);
-        setIsTokenExpired(true);
-        setIsTokenPresent(true);
+        Cookies.remove("token");
+        dispatch(clearUserState());
       }
-    } else {
-      setIsTokenPresent(false);
     }
-  }, [navigate]);
-
-  useEffect(() => {
-    if (showSuccessMessage) {
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 3000);
-    }
-  }, [showSuccessMessage, navigate]);
-
-
+  }, [dispatch, navigate]);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
@@ -73,13 +60,22 @@ const LoginPage = ({ onLoginSuccess}) => {
         { withCredentials: true }
       );
 
-      Cookies.set("token", response.data.token);
+      const token = response.data.token;
+      Cookies.set("token", token, { expires: 1 }); // ✅ Store token for 1 day
+      const decodedToken = jwtDecode(token);
+      dispatch(userState(decodedToken));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; 
+
       setShowSuccessMessage(true);
       resetForm();
 
       if (typeof onLoginSuccess === "function") {
         onLoginSuccess();
       }
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       alert("Error during Login. Please try again.");
@@ -91,16 +87,11 @@ const LoginPage = ({ onLoginSuccess}) => {
   return (
     <div className="h-[70%] flex items-center justify-center p-4 relative mt-8">
       <div className="p-8 rounded-xl shadow-md w-full max-w-md">
-        {isTokenPresent && isTokenExpired && (
-          <p className="text-red-500 text-center mb-4">
-            Your session has expired. Please log in again.
-          </p>
-        )}
         <h2 className="text-2xl font-bold text-center mb-6">
           Login to Your Account
         </h2>
         <Formik
-          initialValues={initialValues}
+          initialValues={{ email: "", password: "" }}
           validationSchema={LoginSchema}
           onSubmit={handleSubmit}
         >
@@ -127,6 +118,7 @@ const LoginPage = ({ onLoginSuccess}) => {
                   </div>
                 )}
               </div>
+
               <div className="mb-6">
                 <label htmlFor="password" className="block text-gray-700 mb-2">
                   Password
@@ -148,6 +140,7 @@ const LoginPage = ({ onLoginSuccess}) => {
                   </div>
                 )}
               </div>
+
               <div className="mb-4 text-right">
                 <a
                   href="/forgot"
@@ -156,6 +149,7 @@ const LoginPage = ({ onLoginSuccess}) => {
                   Forgot Password?
                 </a>
               </div>
+
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -166,12 +160,6 @@ const LoginPage = ({ onLoginSuccess}) => {
             </Form>
           )}
         </Formik>
-        <p className="text-center mt-4 text-gray-600">
-          Don't have an account?
-          <a href="/signup" className="text-blue-500 ml-1 hover:underline">
-            Sign Up
-          </a>
-        </p>
 
         {showSuccessMessage && (
           <div className="toast toast-top toast-center bg-green-500 text-white p-4 rounded-md">

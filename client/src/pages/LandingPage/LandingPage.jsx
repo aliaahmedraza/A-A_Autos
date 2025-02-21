@@ -2,6 +2,13 @@ import Footer from "../../components/Footer/Footer";
 import LoginModal from "../../components/Modals/LoginModal/LoginModal";
 import SignUpModal from "../../components/Modals/SignUpModal/SignUpModal";
 import Marquee from "react-fast-marquee";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { clearUserState, userState } from "../../Redux/Slicers/userSlice";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { useEffect } from "react";
 
 const LandingPage = () => {
   const scrollToTop = () => {
@@ -10,6 +17,35 @@ const LandingPage = () => {
       behavior: "smooth",
     });
   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        const expiryTime = decodedToken.exp * 1000;
+        const currentTime = Date.now();
+
+        if (currentTime > expiryTime) {
+          console.warn("Token expired, logging out...");
+          Cookies.remove("token");
+          dispatch(clearUserState());
+          navigate("/");
+        } else {
+          dispatch(userState(decodedToken)); // ✅ Persist login state on refresh
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; // ✅ Set token for API requests
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error("Error decoding the token:", error);
+        Cookies.remove("token");
+        dispatch(clearUserState());
+      }
+    }
+  }, [dispatch, navigate]);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="flex flex-wrap justify-between items-center bg-[#c5252c] h-28 px-6 md:px-12 lg:px-24">

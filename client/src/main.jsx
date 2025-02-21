@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App.jsx";
 // import "antd/dist/antd.css";
 import { Provider } from "react-redux";
-import { store } from "./Redus/Store.js";
+import { persistor, store } from "./Redux/Store.js";
+import { PersistGate } from "redux-persist/integration/react";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={<p>Loading...</p>} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </StrictMode>
 );

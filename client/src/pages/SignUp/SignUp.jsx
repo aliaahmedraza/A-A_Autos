@@ -2,7 +2,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { signUpState } from "../../Redus/UserSignUp/UserSignUpSlice.js";
+import { signUpState } from "../../Redux/Slicers/UserSignUpSlice.js";
 import PasswordStrengthMeter from "../../components/PasswordStrengthMeter/PasswordStrengthMeter.jsx";
 
 const SignupSchema = Yup.object().shape({
@@ -27,8 +27,8 @@ const SignupSchema = Yup.object().shape({
   role: Yup.string().required("Role is required"),
 });
 
-const SignupPage = ({onSignUpSuccess}) => {
-  const dispatch= useDispatch();
+const SignupPage = ({ onSignUpSuccess }) => {
+  const dispatch = useDispatch();
   const initialValues = {
     username: "",
     email: "",
@@ -47,8 +47,8 @@ const SignupPage = ({onSignUpSuccess}) => {
       const response = await axios.post("http://localhost:3003/signup", values);
       alert(response.data.message || "Signup successful!");
       resetForm();
+      dispatch(signUpState(response.data.message));
       onSignUpSuccess();
-      dispatch(signUpState(response.data.message))
     } catch (error) {
       if (error.response && error.response.data) {
         const backendError = error.response.data;
@@ -81,7 +81,7 @@ const SignupPage = ({onSignUpSuccess}) => {
           validationSchema={SignupSchema}
           onSubmit={handleSubmit}
         >
-          {({ errors, touched, isSubmitting,values }) => (
+          {({ errors, touched, isSubmitting, values }) => (
             <Form>
               <div className="mb-4">
                 <label htmlFor="username" className="block text-gray-700 mb-2">
@@ -201,7 +201,7 @@ const SignupPage = ({onSignUpSuccess}) => {
                 {errors.password && touched.password && (
                   <div className="text-red-500 text-sm mt-1">{errors.cnic}</div>
                 )}
-                <PasswordStrengthMeter password={values.password}/>
+                <PasswordStrengthMeter password={values.password} />
               </div>
               <div className="mb-4">
                 <label htmlFor="role" className="block text-gray-700 mb-2">
