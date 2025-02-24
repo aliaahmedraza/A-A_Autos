@@ -1,12 +1,3 @@
-// import { configureStore } from "@reduxjs/toolkit";
-// import signUpReducer from "./Slicers/UserSignUpSlice.js";
-// import userReducer from "./Slicers/userSlice.js";
-// export const store = configureStore({
-//   reducer: {
-//     signUp: signUpReducer,
-//     user: userReducer,
-//   },
-// });
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import signUpReducer from "./Slicers/UserSignUpSlice.js";
 import userReducer from "./Slicers/userSlice.js";

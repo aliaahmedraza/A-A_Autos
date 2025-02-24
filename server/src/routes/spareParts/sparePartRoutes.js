@@ -139,9 +139,9 @@ sparePartRouter.get("/spare-part/:id", getSparePartById);
  *         name:
  *           type: string
  *           description: Name of the spare part
- *         description:
+ *         modle:
  *           type: string
- *           description: Description of the spare part
+ *           modle: SpareParts pf which Modle
  *         price:
  *           type: number
  *           description: Price of the spare part
@@ -157,9 +157,9 @@ sparePartRouter.get("/spare-part/:id", getSparePartById);
  * @swagger
  * /spare-part:
  *   post:
- *     summary: Create a new spare part
- *     description: Create a new spare part with the provided details. Requires authentication.
- *     tags: [Spare Parts]
+ *     summary: Create a new spare part or multiple spare parts
+ *     description: Allows creating a single spare part or multiple spare parts in bulk with validation checks.
+ *     tags: [SpareParts]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -167,10 +167,15 @@ sparePartRouter.get("/spare-part/:id", getSparePartById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/SparePart'
+ *             type: object
+ *             oneOf:
+ *               - $ref: '#/components/schemas/SparePart'
+ *               - type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/SparePart'
  *     responses:
  *       201:
- *         description: Spare part created successfully
+ *         description: Spare part(s) created successfully.
  *         content:
  *           application/json:
  *             schema:
@@ -178,41 +183,119 @@ sparePartRouter.get("/spare-part/:id", getSparePartById);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Spare part created successfully"
+ *                   example: "Spare part(s) created successfully"
  *                 data:
- *                   $ref: '#/components/schemas/SparePart'
- *       401:
- *         description: Authentication error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Authorization token missing or invalid format. Please provide a Bearer token."
- *       404:
- *         description: User not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "User not found or no longer exists"
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/SparePart'
+ *       400:
+ *         description: Validation error (e.g., negative price or stock quantity).
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "An error occurred while creating the spare part"
+ *         description: Internal server error.
  */
 sparePartRouter.post("/spare-part", AuthenticationMiddleware, createSparePart);
+
+/**
+ * @swagger
+ * /spare-part/bulk:
+ *   post:
+ *     summary: Create multiple spare parts
+ *     description: Allows bulk creation of spare parts with validation checks.
+ *     tags: [SpareParts]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/SparePart'
+ *     responses:
+ *       201:
+ *         description: Spare parts created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "5 spare parts created successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/SparePart'
+ *       400:
+ *         description: Validation error (e.g., negative price or stock quantity).
+ *       500:
+ *         description: Internal server error.
+ */
+sparePartRouter.post("/spare-part/bulk", AuthenticationMiddleware, createSparePart);
+
+
+
+// /**
+//  * @swagger
+//  * /spare-part:
+//  *   post:
+//  *     summary: Create a new spare part
+//  *     description: Create a new spare part with the provided details. Requires authentication.
+//  *     tags: [Spare Parts]
+//  *     security:
+//  *       - bearerAuth: []
+//  *     requestBody:
+//  *       required: true
+//  *       content:
+//  *         application/json:
+//  *           schema:
+//  *             $ref: '#/components/schemas/SparePart'
+//  *     responses:
+//  *       201:
+//  *         description: Spare part created successfully
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 message:
+//  *                   type: string
+//  *                   example: "Spare part created successfully"
+//  *                 data:
+//  *                   $ref: '#/components/schemas/SparePart'
+//  *       401:
+//  *         description: Authentication error
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 message:
+//  *                   type: string
+//  *                   example: "Authorization token missing or invalid format. Please provide a Bearer token."
+//  *       404:
+//  *         description: User not found
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 message:
+//  *                   type: string
+//  *                   example: "User not found or no longer exists"
+//  *       500:
+//  *         description: Internal server error
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 message:
+//  *                   type: string
+//  *                   example: "An error occurred while creating the spare part"
+//  */
+// sparePartRouter.post("/spare-part", AuthenticationMiddleware, createSparePart);
 
 /**
  * @swagger

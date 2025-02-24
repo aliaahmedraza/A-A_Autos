@@ -1,16 +1,10 @@
 import SearchBar from "../SearchBar/SearchBar";
 import { useSelector } from "react-redux";
+import { FaUserCircle } from "react-icons/fa";
+
 
 const Headers = () => {
   const decodetoken = useSelector((state) => state.user.user);
-
-  console.log("token",decodetoken); // Should log the decoded token object
-
-  // Accessing values:
-  console.log("email",decodetoken.email);
-  console.log("id",decodetoken.id);
-  console.log("role",decodetoken.role);
-
   return (
     <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 items-center bg-[#c5252c] h-28 px-24">
       <div className="flex justify-start items-center">
@@ -24,13 +18,14 @@ const Headers = () => {
       </div>
       <div>
         {decodetoken && decodetoken.email ? (
-          <div className="flex items-center gap-3">
-            <img
+          <div className="flex flex-col items-end justify-center gap-3">
+            {/* <img
               src={decodetoken.profilePic || "/Assets/Images/C10.png"}
               alt="Profile"
               className="h-10 w-10 rounded-full object-cover"
-            />
-            <span className="font-medium">{decodetoken.email}</span>
+            /> */}
+            <FaUserCircle className="text-white text-5xl mr-20 pt-2" />
+            <span className="font-medium text-white pb-3">{decodetoken.email}</span>
           </div>
         ) : (
           <p>Loading...</p>
