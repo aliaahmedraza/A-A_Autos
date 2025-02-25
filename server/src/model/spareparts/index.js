@@ -5,6 +5,8 @@ const sparePartSchema = new mongoose.Schema(
     modle: String,
     price: { type: Number, required: true },
     stockQuantity: { type: Number, required: true, default: 0 },
+    manufacturer: { type: String, required: true },
+    cc:{type:String},
     category: String,
   },
   { timestamps: true }
