@@ -6,7 +6,7 @@ import { FaUserCircle } from "react-icons/fa";
 const Headers = () => {
   const decodetoken = useSelector((state) => state.user.user);
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 items-center bg-[#c5252c] h-28 px-24">
+    <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 items-center bg-[#c5252c] h-28 px-24 ">
       <div className="flex justify-start items-center">
         <span>
           <img src="/Assets/Images/C10.png" alt="logo" className="w-20 h-20" />

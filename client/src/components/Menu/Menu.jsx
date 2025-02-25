@@ -1,106 +1,3 @@
-// // import { useState } from "react";
-// // import {
-// //   AppstoreOutlined,
-// //   ContainerOutlined,
-// //   LogoutOutlined,
-// //   MailOutlined,
-// //   MenuFoldOutlined,
-// //   MenuUnfoldOutlined,
-// //   UserOutlined,
-// // } from "@ant-design/icons";
-// // import { Button, Menu } from "antd";
-// // import { useNavigate } from "react-router-dom";
-// // import LogoutModal from "../Modals/LogoutModal/LogoutModal";
-
-// // const items = [
-// //   {
-// //     key: "1",
-// //     icon: <UserOutlined />,
-// //     label: "Update Profile",
-// //   },
-// //   {
-// //     key: "2",
-// //     icon: <LogoutOutlined />,
-// //     label: "LogOut",
-// //   },
-// //   {
-// //     key: "3",
-// //     icon: <ContainerOutlined />,
-// //     label: "Option 3",
-// //   },
-// //   {
-// //     key: "sub1",
-// //     label: "Navigation One",
-// //     icon: <MailOutlined />,
-// //     children: [
-// //       { key: "5", label: "Option 5" },
-// //       { key: "6", label: "Option 6" },
-// //       { key: "7", label: "Option 7" },
-// //       { key: "8", label: "Option 8" },
-// //     ],
-// //   },
-// //   {
-// //     key: "sub2",
-// //     label: "Navigation Two",
-// //     icon: <AppstoreOutlined />,
-// //     children: [
-// //       { key: "9", label: "Option 9" },
-// //       { key: "10", label: "Option 10" },
-// //       {
-// //         key: "sub3",
-// //         label: "Submenu",
-// //         children: [
-// //           { key: "11", label: "Option 11" },
-// //           { key: "12", label: "Option 12" },
-// //         ],
-// //       },
-// //     ],
-// //   },
-// // ];
-
-// // const MenuOption = () => {
-// //   const [collapsed, setCollapsed] = useState(true);
-// //   const [isModalVisible, setIsModalVisible] = useState(false);
-// //   const navigate = useNavigate();
-
-// //   const toggleCollapsed = () => {
-// //     setCollapsed(!collapsed);
-// //   };
-
-// //   const handleClick = (e) => {
-// //     if (e.key === "1") {
-// //       navigate("/update");
-// //     } else if (e.key === "2") {
-// //       setIsModalVisible(true); // Show modal on LogOut click
-// //     }
-// //   };
-
-// //   return (
-// //     <div className="w-48 h-screen">
-// //       <Button
-// //         type="text"
-// //         onClick={toggleCollapsed}
-// //         // style={{ marginBottom: 16 }}
-// //         className="w-20 h-10 mb-2 bg-[#FFFFFF]"
-// //       >
-// //         {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-// //       </Button>
-// //       <Menu
-// //         defaultSelectedKeys={["1"]}
-// //         mode="inline"
-// //         theme="dark"
-// //         inlineCollapsed={collapsed}
-// //         items={items}
-// //         onClick={handleClick}
-// //         className="h-full"
-// //       />
-// //       <LogoutModal open={isModalVisible} setOpen={setIsModalVisible} />
-// //     </div>
-// //   );
-// // };
-
-// // export default MenuOption;
-
 // import React from "react";
 // import {
 //   IconButton,
@@ -361,6 +258,8 @@
 //     </>
 //   );
 // }
+
+
 import React, { useState } from "react";
 import {
   IconButton,
@@ -368,7 +267,6 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  Drawer,
   Card,
 } from "@material-tailwind/react";
 import {
@@ -391,63 +289,73 @@ export function SidebarWithBurgerMenu() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <>
-      <IconButton variant="text" size="lg" onClick={openDrawer}>
+    <div className="relative">
+      <IconButton
+        variant="text"
+        size="lg"
+        className="w-14 h-14 pr-7 pb-10"
+        onClick={openDrawer}
+      >
         {isDrawerOpen ? (
           <XMarkIcon className="h-8 w-8 stroke-2" />
         ) : (
           <Bars3Icon className="h-8 w-8 stroke-2" />
         )}
       </IconButton>
+      {isDrawerOpen && (
+        <div onClick={closeDrawer} className="inset-0 z-50 ">
+          <div
+            className="absolute top-0 left-0 w-64 h-96 shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Card className="h-full w-full p-4">
+              <Typography variant="h5" color="blue-gray" className="mb-4">
+                Sidebar
+              </Typography>
 
-      <Drawer
-        open={isDrawerOpen}
-        onClose={closeDrawer}
-        overlay={false}
-        className="bg-white"
-      >
-        <Card className="h-[calc(100vh-2rem)] w-full p-4" shadow={false}>
-          <Typography variant="h5" color="blue-gray" className="mb-4">
-            Sidebar
-          </Typography>
+              <List>
+                <ListItem>
+                  <ListItemPrefix>
+                    <InboxIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Inbox
+                </ListItem>
 
-          <List>
-            <ListItem>
-              <ListItemPrefix>
-                <InboxIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Inbox
-            </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Profile
+                </ListItem>
 
-            <ListItem>
-              <ListItemPrefix>
-                <UserCircleIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Profile
-            </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <Cog6ToothIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Settings
+                </ListItem>
 
-            <ListItem>
-              <ListItemPrefix>
-                <Cog6ToothIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Settings
-            </ListItem>
-
-            <ListItem
-              onClick={openModal}
-              className="cursor-pointer hover:bg-gray-100"
-            >
-              <ListItemPrefix>
-                <PowerIcon className="h-5 w-5 text-red-600" />
-              </ListItemPrefix>
-              Log Out
-            </ListItem>
-          </List>
-        </Card>
-      </Drawer>
-
-      {/* Logout Modal */}
+                <ListItem
+                  onClick={openModal}
+                  className="cursor-pointer hover:bg-gray-100"
+                >
+                  <ListItemPrefix>
+                    <PowerIcon className="h-5 w-5 text-red-600" />
+                  </ListItemPrefix>
+                  Log Out
+                </ListItem>
+              </List>
+              <button
+                className="absolute top-4 right-4 text-black"
+                onClick={closeDrawer}
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </Card>
+          </div>
+        </div>
+      )}
       <LogoutModal open={isModalOpen} setOpen={setIsModalOpen} />
-    </>
+    </div>
   );
 }
