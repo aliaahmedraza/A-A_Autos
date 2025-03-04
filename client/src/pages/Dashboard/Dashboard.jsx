@@ -1,3 +1,6 @@
+import Booking from "../../components/BookingCreation/BookingCreation.jsx";
+// import Craousel from "../../components/Craousel/Craousel.jsx";
+import ServicePackageForm from "../../components/CreateServicePackage/CreateServicePackage.jsx";
 import CreateSpareParts from "../../components/CreateSpareParts/CreateSpareParts.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Headers from "../../components/Header/Header.jsx";
@@ -18,7 +21,15 @@ const Dashboard = () => {
           <CreateSpareParts />
         </div>
       </div>
-
+      <div>
+        <ServicePackageForm />
+      </div>
+      <div>
+        <Booking />
+      </div>
+      {/* <div>
+        <Craousel/>
+      </div> */}
       <div className="text-white col-span-1">
         <Footer />
       </div>
