@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 
 const Headers = () => {
-  const decodetoken = useSelector((state) => state.user.user);
+  const userData = useSelector((state) => state.user.user);
   return (
     <div className="grid grid-cols-[1fr_2fr_1fr] gap-4 items-center bg-[#c5252c] h-28 px-24 ">
       <div className="flex justify-start items-center">
@@ -17,7 +17,7 @@ const Headers = () => {
         <SearchBar />
       </div>
       <div>
-        {decodetoken && decodetoken.email ? (
+        {userData && userData.email ? (
           <div className="flex flex-col items-end justify-center gap-3">
             {/* <img
               src={decodetoken.profilePic || "/Assets/Images/C10.png"}
@@ -25,7 +25,7 @@ const Headers = () => {
               className="h-10 w-10 rounded-full object-cover"
             /> */}
             <FaUserCircle className="text-white text-5xl mr-20 pt-2" />
-            <span className="font-medium text-white pb-3">{decodetoken.email}</span>
+            <span className="font-medium text-white pb-3">{userData.email}</span>
           </div>
         ) : (
           <p>Loading...</p>

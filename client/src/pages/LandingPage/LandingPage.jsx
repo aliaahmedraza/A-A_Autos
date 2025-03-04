@@ -20,9 +20,10 @@ const LandingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    const token = Cookies.get("token");
+    const verifyToken = async () => {
+      const token = Cookies.get("token");
+      if (!token) return;
 
-    if (token) {
       try {
         const decodedToken = jwtDecode(token);
         const expiryTime = decodedToken.exp * 1000;
@@ -34,17 +35,24 @@ const LandingPage = () => {
           dispatch(clearUserState());
           navigate("/");
         } else {
-          dispatch(userState(decodedToken)); // ✅ Persist login state on refresh
-          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; // ✅ Set token for API requests
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          const { data: userData } = await axios.get(
+            `http://localhost:3003/user/${decodedToken.id}`
+          );
+          dispatch(userState(userData));
           navigate("/dashboard");
         }
       } catch (error) {
-        console.error("Error decoding the token:", error);
+        console.error("Error processing token:", error);
         Cookies.remove("token");
         dispatch(clearUserState());
+        navigate("/");
       }
-    }
+    };
+
+    verifyToken();
   }, [dispatch, navigate]);
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
